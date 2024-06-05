@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import com.example.corts.data.local.database.AppDatabase
+import com.example.corts.data.local.database.MIGRATION_2_3
 import com.example.corts.data.local.database.MapDao
 import dagger.Module
 import dagger.Provides
@@ -47,6 +48,7 @@ class DatabaseModule {
             AppDatabase::class.java,
             "DataBase"
         )
+            .addMigrations(MIGRATION_2_3)
             .fallbackToDestructiveMigration()
             .build()
     }

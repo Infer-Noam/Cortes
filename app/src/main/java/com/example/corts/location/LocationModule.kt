@@ -1,4 +1,4 @@
-package com.example.corts
+package com.example.corts.location
 
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient

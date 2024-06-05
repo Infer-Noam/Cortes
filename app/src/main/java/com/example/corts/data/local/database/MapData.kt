@@ -10,7 +10,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
-
+import java.sql.Date
 
 
 @Entity
@@ -19,7 +19,8 @@ data class Point(
     var uid: Int = 0, // each block has a unique id
 
     val longitude: Double,
-    val latitude: Double
+    val latitude: Double,
+    val date: String
 
 )
 

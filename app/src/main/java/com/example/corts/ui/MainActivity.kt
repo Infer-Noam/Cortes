@@ -1,6 +1,7 @@
 package com.example.corts.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -24,15 +25,17 @@ import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.Cortés.ui.Map.CortésApp
+import com.example.Cortés.ui.Map.Map
 
 import com.example.corts.ui.ViewModels.MapViewModel
 import com.example.Cortés.ui.theme.CortésTheme
+import com.example.corts.location.LocationUpdatesService
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.mapbox.maps.MapboxExperimental
 
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +46,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var permissionsManager: PermissionsManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    @OptIn(MapboxExperimental::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,9 +70,10 @@ class MainActivity : ComponentActivity() {
 
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+            // used to access current location
             val locationRequest = LocationRequest.create().apply {
-                interval = 10 * 6000 // Update interval in milliseconds (e.g., every 60 seconds)
-                fastestInterval = 5 * 6000 // Fastest update interval
+                interval = 10 * 500 // Update interval in milliseconds (e.g., every 60 seconds)
+                fastestInterval = 5 * 500 // Fastest update interval
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
 
@@ -99,9 +104,14 @@ class MainActivity : ComponentActivity() {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                 //   return
+                    //   return
                 }
                 fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+
+                // starts the background service only if permission is granted
+                val intent = Intent(this, LocationUpdatesService::class.java)
+                this.startService(intent)
+
             } else {
                 permissionsManager = PermissionsManager(permissionsListener)
                 permissionsManager.requestLocationPermissions(this)
@@ -113,13 +123,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     if (latitude != 0.0 && longitude != 0.0) {
-                        viewModel.insertPoint(point = Point.fromLngLat(longitude, latitude))
-                        CortésApp(
-
-                            coordinatesList = uiState.coordinatesList,
-                            currentCoordinates = Point.fromLngLat(longitude, latitude),
-                            context = this
-                        )
+                      CortésApp(coordinatesList = uiState.coordinatesList, longitude = longitude, latitude = latitude)
                     }
                 }
             }
@@ -131,4 +135,6 @@ class MainActivity : ComponentActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
+
 }
