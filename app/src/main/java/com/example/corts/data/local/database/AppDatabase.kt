@@ -18,9 +18,11 @@ package com.example.corts.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.corts.data.local.dao.PointDao
+import com.example.corts.data.local.entity.Point
 
 @Database(entities = [Point::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun mapDao(): MapDao  // abstract fun of the time data base
+    abstract fun pointDao(): PointDao  // abstract fun of the time data base
 }

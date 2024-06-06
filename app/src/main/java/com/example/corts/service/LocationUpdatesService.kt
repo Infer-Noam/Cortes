@@ -1,4 +1,4 @@
-package com.example.corts.location
+package com.example.corts.service
 
 import android.Manifest
 import android.app.Notification
@@ -14,29 +14,27 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.corts.R
-import com.example.corts.ui.ViewModels.MapViewModel
+import com.example.corts.data.repository.pointRepositories.PointRepository
+import com.example.corts.ui.screens.map.PointViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import com.example.corts.data.MapRepository
 import com.mapbox.geojson.Point
-import java.sql.Date
-import java.time.LocalDate
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class LocationUpdatesService : Service() {
 
     @Inject
-    lateinit var mapRepository: MapRepository
+    lateinit var pointRepository: PointRepository
 
-    private val viewModel: MapViewModel by lazy { MapViewModel(mapRepository) }
+    private val viewModel: PointViewModel by lazy { PointViewModel(pointRepository) }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val locationRequest = LocationRequest.create().apply {

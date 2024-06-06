@@ -1,32 +1,17 @@
-package com.example.corts.data.local.database
+package com.example.corts.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import androidx.room.Upsert
+import com.example.corts.data.local.entity.Point
 import kotlinx.coroutines.flow.Flow
-import java.sql.Date
-
-
-@Entity
-data class Point(
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0, // each block has a unique id
-
-    val longitude: Double,
-    val latitude: Double,
-    val date: String
-
-)
 
 
 @Dao
-interface MapDao {
+interface PointDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(point: Point): Long

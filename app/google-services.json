@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "754707820576",
+    "project_id": "cortes-37cad",
+    "storage_bucket": "cortes-37cad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754707820576:android:56a33ecbc3587adec10c45",
+        "android_client_info": {
+          "package_name": "com.example.corts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "754707820576-mafb53bu5uehk6e27eftr985oeuj2j6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.corts",
+            "certificate_hash": "4bc1be60e274215cfc5ae5b3c335863576517897"
+          }
+        },
+        {
+          "client_id": "754707820576-vcdr0dva0rmcvvta6mm4km4fiakvqocl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5NposEm5DdtrAHHD9ejHdQknjBnMGOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "754707820576-vcdr0dva0rmcvvta6mm4km4fiakvqocl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

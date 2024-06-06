@@ -17,11 +17,10 @@
 package com.example.corts.data.local.di
 
 import android.content.Context
-import androidx.room.Database
 import androidx.room.Room
+import com.example.corts.data.local.dao.PointDao
 import com.example.corts.data.local.database.AppDatabase
 import com.example.corts.data.local.database.MIGRATION_2_3
-import com.example.corts.data.local.database.MapDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,8 +35,8 @@ class DatabaseModule {
 
 
     @Provides
-        fun provideMapDao(appDatabase: AppDatabase): MapDao {
-        return appDatabase.mapDao() // provide time data table
+        fun provideMapDao(appDatabase: AppDatabase): PointDao {
+        return appDatabase.pointDao() // provide time data table
     }
 
     @Provides

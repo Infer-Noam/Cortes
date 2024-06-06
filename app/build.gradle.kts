@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt.gradle)
     id("kotlin-kapt")
     alias(libs.plugins.ksp)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -53,7 +54,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -65,6 +65,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.play.services.location)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.animation.graphics.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,7 +78,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.maps.android)
     implementation(libs.maps.compose)
-
     // Hilt Dependency Injection
     implementation(libs.hilt.android)
    // implementation(libs.hilt.android.compiler)
@@ -85,16 +88,19 @@ dependencies {
     // Hilt and Robolectric tests.
     implementation(libs.hilt.gradle.plugin)
     kaptTest(libs.hilt.android.compiler)
-
     implementation(libs.androidx.hilt.navigation.compose)
-
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-
-
-
-
+    // data store
+    implementation(libs.androidx.datastore.preferences)
+    // Import the Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.database)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.accompanist.permissions)
 }
 
 // Allow references to generated code

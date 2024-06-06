@@ -1,7 +1,5 @@
 package com.example.Cortés.ui.Map
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,6 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.corts.ui.screens.map.PointViewModel
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
@@ -30,16 +32,17 @@ import com.mapbox.maps.plugin.gestures.generated.GesturesSettings
 
 @OptIn(MapboxExperimental::class)
 @Composable
-fun Map(modifier: Modifier = Modifier, coordinatesList: List<Point>, currentCoordinates: Point, context: Context) {
+fun Map(modifier: Modifier = Modifier, currentCoordinates: Point, navController: NavController) {
+    val pointViewModel: PointViewModel = hiltViewModel()
+    val pointUiState by pointViewModel.uiState.collectAsStateWithLifecycle()
 
-
-    Toast.makeText(context, currentCoordinates.longitude().toString(), Toast.LENGTH_SHORT).show()
+   // Toast.makeText(context, currentCoordinates.longitude().toString(), Toast.LENGTH_SHORT).show()
 
  val geoJsonSource: GeoJsonSourceState = rememberGeoJsonSourceState {
         // Initialize the GeoJSONData with the list of points
 
 
-        val features = (coordinatesList + currentCoordinates).map {
+        val features = (pointUiState.coordinatesList + currentCoordinates).map {
             Feature.fromGeometry(
                 Point.fromLngLat(
                     it.longitude(),
@@ -56,8 +59,8 @@ fun Map(modifier: Modifier = Modifier, coordinatesList: List<Point>, currentCoor
         )
     }
 
-    LaunchedEffect(coordinatesList, currentCoordinates) {
-        val updatedFeatures = (coordinatesList + currentCoordinates).map {
+    LaunchedEffect(pointUiState.coordinatesList, currentCoordinates) {
+        val updatedFeatures = (pointUiState.coordinatesList + currentCoordinates).map {
             Feature.fromGeometry(Point.fromLngLat(it.longitude(), it.latitude()))
         }
         geoJsonSource.data = GeoJSONData(updatedFeatures)

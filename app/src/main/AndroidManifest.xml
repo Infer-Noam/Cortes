@@ -25,19 +25,29 @@
         android:theme="@style/Theme.Cortés"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Cortés">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Accepts URIs that begin with "https://cortez.page.link/SignIn" -->
+                <data
+                    android:host="cortez.page.link"
+                    android:scheme="https"
+                    android:pathPrefix="/SignIn" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <service
-            android:name=".location.LocationUpdatesService"
+            android:name=".service.LocationUpdatesService"
             android:foregroundServiceType="location"
             android:enabled="true"
             android:exported="false" />
     </application>
+
 </manifest>
