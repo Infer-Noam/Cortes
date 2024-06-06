@@ -1,6 +1,8 @@
 package com.example.corts.ui.navigation
 
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.Cortés.ui.Map.Map
+import com.example.Cortés.ui.panes.Map.Map
 import com.example.corts.service.LocationUpdatesService
 import com.example.corts.ui.panes.RequestPermissionsScreen
 import com.example.corts.ui.panes.account.AccountPane
@@ -23,6 +25,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 
+@RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Navigation() {
@@ -50,7 +53,7 @@ fun Navigation() {
             composable("settings") { }
             composable("account") { AccountPane(navController) }
             composable("map") {
-                Map(
+               Map(
                     navController = navController,
                     currentCoordinates = locationPointState.value
                 )

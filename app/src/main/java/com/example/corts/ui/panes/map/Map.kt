@@ -9,6 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.example.corts.data.local.entity.Point
+import com.example.corts.ui.panes.map.PointViewModel
+import com.mapbox.geojson.Feature
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
@@ -56,7 +61,6 @@ fun Map(modifier: Modifier = Modifier, currentCoordinates: Point, navController:
 
     LaunchedEffect(pointUiState.coordinatesList, currentCoordinates) {
         val updatedFeatures = (pointUiState.coordinatesList + currentCoordinates).map {
-            Feature.fromGeometry(Point.fromLngLat(it.longitude(), it.latitude()))
             Feature.fromGeometry(com.mapbox.geojson.Point.fromLngLat(it.longitude, it.latitude))
         }
         geoJsonSource.data = GeoJSONData(updatedFeatures)
