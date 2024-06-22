@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
+
 interface FirebasePointRepository {
     suspend fun insertPointToFirebase(point: Point)
     fun getAllPointsFromFirebase(): Flow<List<Point>>
+    fun deleteAllPointsFromFirebase() : Boolean
 
 }
 class DefaultFirebasePointRepository @Inject constructor(
@@ -43,5 +45,18 @@ class DefaultFirebasePointRepository @Inject constructor(
         }
         pointsReference().addValueEventListener(listener)
         awaitClose { pointsReference().removeEventListener(listener) }
+    }
+
+    override fun deleteAllPointsFromFirebase() : Boolean{
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val pointsRef = FirebaseDatabase.getInstance("https://cortes-37cad-default-rtdb.europe-west1.firebasedatabase.app").getReference("points/$userId")
+            pointsRef.removeValue()
+
+            return true
+        } else {
+            return false
+        }
     }
 }

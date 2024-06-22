@@ -5,6 +5,8 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -68,7 +70,9 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.animation.graphics.android)
+    implementation(libs.androidx.material3.window.size.android)
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
+    //  implementation(libs.androidx.animation.graphics.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -101,6 +105,12 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.accompanist.permissions)
+    implementation(libs.androidx.animation)
+    implementation(libs.androidx.adaptive)
+    implementation(libs.androidx.adaptive.layout)
+    implementation(libs.androidx.adaptive.navigation)
+    implementation(libs.kotlinx.serialization.json)
+
 }
 
 // Allow references to generated code

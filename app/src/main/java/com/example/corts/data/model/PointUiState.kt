@@ -1,8 +1,8 @@
 package com.example.corts.data.model
 
-import com.mapbox.geojson.Point
-import com.mapbox.maps.MapboxExperimental
 
-data class PointUiState @OptIn(MapboxExperimental::class) constructor(
+import com.example.corts.data.local.entity.Point
+
+data class PointUiState constructor(
     val coordinatesList: List<Point> = emptyList()
 )

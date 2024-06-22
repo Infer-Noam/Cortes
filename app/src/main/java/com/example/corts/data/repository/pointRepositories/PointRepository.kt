@@ -16,6 +16,7 @@ interface PointRepository {
 
     fun getAllPoints(): Flow<List<Point>>
 
+    suspend fun deleteAllPoints() : Boolean
 
 }
 
@@ -48,10 +49,8 @@ class DefaultPointRepository @Inject constructor(
             localPoints + firebasePoints
         }
 
-
-   /* override fun getAllPoints(): Flow<List<Point>> =
-        pointDao.getAllPoints() // Get points from the local database
-
-    fun getAllPointsFromFirebase(): Flow<List<Point>> =
-        firebasePointRepository.getAllPointsFromFirebase() // Get points from Firebase */
+    override suspend fun deleteAllPoints() : Boolean{
+        pointDao.deleteAll()
+        return firebasePointRepository.deleteAllPointsFromFirebase()
+    }
 }

@@ -1,7 +1,8 @@
 package com.example.corts.data.model
 
-import com.example.corts.ui.screens.account.LEAGUE
+import com.example.corts.ui.panes.account.LEAGUE
 import com.mapbox.maps.MapboxExperimental
+
 
 data class AccountUiState @OptIn(MapboxExperimental::class) constructor(
     // val picture: Picture

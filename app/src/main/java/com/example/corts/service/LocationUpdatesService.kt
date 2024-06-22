@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.corts.R
 import com.example.corts.data.repository.pointRepositories.PointRepository
-import com.example.corts.ui.screens.map.PointViewModel
+import com.example.corts.ui.panes.map.PointViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -28,13 +28,14 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 
+/* responsible for inserting new points to the data bases */
 @AndroidEntryPoint
 class LocationUpdatesService : Service() {
 
     @Inject
     lateinit var pointRepository: PointRepository
 
-    private val viewModel: PointViewModel by lazy { PointViewModel(pointRepository) }
+    private val viewModel: PointViewModel by lazy { PointViewModel( this ,pointRepository) }
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val locationRequest = LocationRequest.create().apply {
@@ -75,13 +76,11 @@ class LocationUpdatesService : Service() {
     }
 
     private fun createNotification(): Notification {
-        // Build your notification here
-        // Example:
         val channelId = "location_channel"
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Location Tracking")
             .setContentText("Tracking your location")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.logo_dark)
             .build()
 
         // Create the notification channel (if not already created)
@@ -109,7 +108,6 @@ class LocationUpdatesService : Service() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Handle permissions here
             return
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)

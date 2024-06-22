@@ -37,4 +37,7 @@ interface PointDao {
 
     @Query("SELECT * FROM point")
     fun getAllPoints(): Flow<List<Point>>
+
+    @Query("DELETE FROM point")
+    fun deleteAll()
 }

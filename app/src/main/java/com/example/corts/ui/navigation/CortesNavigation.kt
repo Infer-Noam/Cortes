@@ -1,8 +1,10 @@
-package com.example.corts.ui
+package com.example.corts.ui.navigation
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -10,16 +12,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.Cortés.ui.Map.Map
-import com.example.corts.ui.screens.RequestPermissionsScreen
-import com.example.corts.ui.screens.account.AccountScreen
-import com.example.corts.ui.screens.authentication.AuthViewModel
-import com.example.corts.ui.screens.authentication.LoggingScreen
-import com.example.corts.ui.screens.authentication.email_logging.EmailLoggingScreen
-import com.example.corts.ui.screens.map.LocationViewModel
+import com.example.corts.service.LocationUpdatesService
+import com.example.corts.ui.panes.RequestPermissionsScreen
+import com.example.corts.ui.panes.account.AccountPane
+import com.example.corts.ui.panes.authentication.AuthViewModel
+import com.example.corts.ui.panes.authentication.LoggingScreen
+import com.example.corts.ui.panes.map.LocationViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.mapbox.geojson.Point
 
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -35,29 +36,29 @@ fun Navigation() {
     val hasLocationPerm = locationPermissionState.status.isGranted
 
 
+    if(locationPermissionState.status.isGranted){
+        locationViewModel.startLocationUpdates() //starts tracking current location
+
+        val serviceIntent = Intent(LocalContext.current, LocationUpdatesService::class.java) // starts inserting points in the background
+        LocalContext.current.startService(serviceIntent)
+
+    }
+
     NavHost(navController = navController, startDestination = if(isAuthenticated){if(hasLocationPerm){"screens"}else{"request_permissions"}}else{"logging"}) {
         navigation(startDestination = "account", route = "screens") {
             composable("global") { }
             composable("settings") { }
-            composable("account") { AccountScreen(navController) }
+            composable("account") { AccountPane(navController) }
             composable("map") {
                 Map(
                     navController = navController,
-                    currentCoordinates = Point.fromLngLat(
-                        locationPointState.value.longitude(),
-                        locationPointState.value.latitude()
-                    )
+                    currentCoordinates = locationPointState.value
                 )
             }
         }
-        // Nested navigation graph for logging
-        navigation(startDestination = "main_logging", route = "logging") {
-            composable("main_logging") { LoggingScreen(navController) }
-            composable("email_logging") {
-                EmailLoggingScreen(navController)
-            }
-        }
+        composable("logging"){ LoggingScreen() }
         composable("request_permissions") { RequestPermissionsScreen(navController) }
     }
 
 }
+
