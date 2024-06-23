@@ -104,6 +104,8 @@ class PointViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.R)
     fun exportDataToFile() {
         startLoading()
+        val fileName = "coordinates_data_${System.currentTimeMillis()}.txt"
+
         val groupedPoints = _uiState.value.coordinatesList.groupBy { it.date }
 
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -119,7 +121,7 @@ class PointViewModel @Inject constructor(
 
         try {
             val contentValues = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, "coordinates_data.txt")
+                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                 put(MediaStore.MediaColumns.MIME_TYPE, "text/plain")
             }
 
